@@ -14,9 +14,15 @@ Simple e-commerce shop with Spring Boot and MySQL (CRUD app).
 
 ## What works now...
 
-* User log in and register
+* User and admin log in and register
+![N|Solid](https://cldup.com/cJvso3PRla.jpg)
+![N|Solid](https://cldup.com/17bJ9a-8vA-3000x3000.jpeg)
 * Admin panel for categories
+![N|Solid](https://cldup.com/VCFmniZey0-3000x3000.jpeg)
 * Displaying, adding, updating and removing categories in admin panel.
+![N|Solid](https://cldup.com/ogS1Ha-fVe-3000x3000.jpeg)
+![N|Solid](https://cldup.com/CkdDSZSDNj-3000x3000.jpeg)
+![N|Solid](https://cldup.com/trIc9ZRKsG-3000x3000.jpeg)
 
 ## ... and what is to be done:
 
@@ -24,6 +30,5 @@ Simple e-commerce shop with Spring Boot and MySQL (CRUD app).
 * Displaying products for clients
 * Cart
 * Orders
-
 
 All passwords in configuration files are just for example. :)
