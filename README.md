@@ -9,6 +9,8 @@ Simple e-commerce shop with Spring Boot and MySQL (CRUD app).
 * MySQL
 * JPA and Hibernate
 * TomCat
+* Maven
+* HTML and CSS (Bootstrap)
 
 ## What works now...
 
