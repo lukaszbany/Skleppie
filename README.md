@@ -23,10 +23,12 @@ Simple e-commerce shop with Spring Boot and MySQL (CRUD app).
 ![N|Solid](https://cldup.com/ogS1Ha-fVe-3000x3000.jpeg)
 ![N|Solid](https://cldup.com/CkdDSZSDNj-3000x3000.jpeg)
 ![N|Solid](https://cldup.com/trIc9ZRKsG-3000x3000.jpeg)
+* Displaying and filtering products by category.
+![N|Solid](https://cldup.com/bnQ6LBV8ji-3000x3000.png)
 
 ## ... and what is to be done:
 
-* CRUD operations for products (for admin).
+* Adding, updating and removing products (for admin).
 * Displaying products for clients
 * Cart
 * Orders

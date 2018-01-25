@@ -16,7 +16,7 @@
                     <label class="control-label">Nazwa kategorii:</label> <form:input path="name" cssClass="form-control" cssErrorClass="form-control error" /> <form:errors path="name" cssClass="label label-danger" />
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Opis:</label> <form:input path="description" cssClass="form-control" />
+                    <label class="control-label">Opis:</label> <form:textarea path="description" cssClass="form-control" /> <form:errors path="description" cssClass="label label-danger" />
                 </div>
                 <div class="form-group">
                     <label class="control-label">Kategoria nadrzędna*:</label>

@@ -1,5 +1,6 @@
 package skleppie.model;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class Category {
     @Column(name = "name")
     @NotNull(message = "Kategoria musi mieć nazwę")
     @NotEmpty(message = "Kategoria musi mieć nazwę")
+    @Length(max = 255, message = "Zbyt długa nazwa")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,6 +30,7 @@ public class Category {
     private Set<Category> subcategories;
 
     @Column(name = "description")
+    @Length(max = 1000, message = "Zbyt długi opis")
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")

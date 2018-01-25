@@ -8,9 +8,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             Pomoc:
-            <button type="button" class="btn btn-info"><i class="fas fa-plus"></i></button> - dodawanie podkategorii
-            <button type="button" class="btn btn-info"><i class="fas fa-trash"></i></button> - modyfikacja kategorii
-            <button type="button" class="btn btn-danger"><i class="fas fa-pencil-alt"></i></button> - usuwanie kategorii
+            <button type="button" class="btn btn-info" disabled><i class="fas fa-plus"></i></button> - dodawanie podkategorii
+            <button type="button" class="btn btn-info" disabled><i class="fas fa-trash"></i></button> - modyfikacja kategorii
+            <button type="button" class="btn btn-danger" disabled><i class="fas fa-pencil-alt"></i></button> - usuwanie kategorii
         </div>
         <div class="panel-body">
             <table class="table table-striped table-hover">

@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
+public class AdminCategoryController {
 
     @Autowired
     CategoryService categoryService;
@@ -48,23 +48,38 @@ public class AdminController {
 
     @RequestMapping(value = "/categories/add", method = RequestMethod.POST)
     public ModelAndView addCategory(@ModelAttribute("category") @Valid Category category, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView;
 
         if(bindingResult.hasErrors()) {
-            modelAndView.setViewName("admin/edit-category");
-            modelAndView.addObject("action", "add");
-            List<Category> categories = categoryService.getCategories();
-            modelAndView.addObject("parentId", category.getParent().getId());
-            modelAndView.addObject("categories", categories);
+            modelAndView = configureModelAndViewForErrors(category);
         }else {
-            categoryService.saveCategory(category);
-            modelAndView.addObject("successMessage", "Kategoria została zapisana");
-            modelAndView.addObject("backLink", "/admin/categories");
-            modelAndView.setViewName("/admin/edit-message");
+            modelAndView = saveCategoryAndConfigureModelAndViewForSuccess(category);
         }
 
         return modelAndView;
     }
+
+    private ModelAndView configureModelAndViewForErrors(Category category) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin/edit-category");
+        modelAndView.addObject("action", "add");
+        List<Category> categories = categoryService.getCategories();
+        modelAndView.addObject("parentId", category.getParent().getId());
+        modelAndView.addObject("categories", categories);
+
+        return modelAndView;
+    }
+
+    private ModelAndView saveCategoryAndConfigureModelAndViewForSuccess(Category category) {
+        categoryService.saveCategory(category);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("successMessage", "Kategoria została zapisana");
+        modelAndView.addObject("backLink", "/admin/categories");
+        modelAndView.setViewName("/admin/edit-message");
+
+        return modelAndView;
+    }
+
 
     @RequestMapping("/categories/remove")
     public ModelAndView removeCategory(@RequestParam("currentId") String currentId) {
@@ -124,18 +139,24 @@ public class AdminController {
         Map<Integer, String> nestPrefixes = new HashMap<>();
 
         for(Category category : categories) {
-            int id = category.getId();
-            int nestLevel = calculateNestLevel(category, 0);
-            StringBuilder sb = new StringBuilder("|-");
-            for(int i = 0; i < nestLevel; i++) {
-                sb.append("---");
-            }
-            String nestPrefix = sb.toString();
+            preparePrefix(nestPrefixes, category);
 
-            nestPrefixes.put(id, nestPrefix);
         }
 
         return nestPrefixes;
+    }
+
+    private void preparePrefix(Map<Integer, String> nestPrefixes, Category category) {
+        int id = category.getId();
+        int nestLevel = calculateNestLevel(category, 0);
+
+        StringBuilder sb = new StringBuilder("|-");
+        for(int i = 0; i < nestLevel; i++) {
+            sb.append("---");
+        }
+
+        String nestPrefix = sb.toString();
+        nestPrefixes.put(id, nestPrefix);
     }
 
     private int calculateNestLevel(Category category, int level) {
