@@ -2,6 +2,7 @@ package skleppie.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import skleppie.model.Category;
 import skleppie.model.Product;
 import skleppie.repository.ProductRepository;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("productService")
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     @Autowired

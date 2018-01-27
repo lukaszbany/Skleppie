@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:include page="../header.jsp" />
@@ -15,7 +16,7 @@
             </br>
             <form:form action="/admin/products" method="get" cssClass="form-inline product-filter">
             Operacje:
-            <button type="button" class="btn btn-info"><i class="fas fa-plus"></i> Dodaj produkt</button>
+            <a role="button" href="/admin/products/add" class="btn btn-info"><i class="fas fa-plus"></i> Dodaj produkt</a>
             Filtr kategorii:
                 <select name="category" class="form-control">
                     <c:forEach items="${categories}" var="category">
@@ -50,41 +51,51 @@
                     <tr>
                         <td>${product.getId()}</td>
                         <td class="col-md-2">${product.getName()}</td>
-                        <td class="col-md-4">${product.getDescription()}</td>
+                        <td class="col-md-4">
+                            <c:choose>
+                                <c:when test="${product.getDescription().length() > 100}" >
+                                    ${fn:substring(product.getDescription(), 0, 100)}...
+                                </c:when>
+                                <c:when test="${product.getDescription().length() <= 100}" >
+                                    ${product.getDescription()}
+                                </c:when>
+                            </c:choose>
+                        </td>
                         <td class="col-md-2">${product.getCategory().getName()}</td>
                         <td>${product.getPrice()} zł</td>
                         <td>${product.getQuantity()}</td>
                         <td><img src="/public/images/products/${product.getImageFilename()}" class="img-thumbnail admin-panel-products"> </td>
                         <td class="col-md-2">
                             <a role="button" href="/admin/products/${product.getId()}" class="btn btn-info"><i class="fas fa-pencil-alt"></i></a>&nbsp;
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove${product.getId()}"><i class="fas fa-trash"></i></button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove" onclick="modalID = ${product.getId()}; modalName = '${product.getName()}'; prepareModal()"><i class="fas fa-trash"></i></button>
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="remove${product.getId()}" role="dialog">
-                                <div class="modal-dialog">
-
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Potwierdź operację</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Czy jesteś pewien, że chcesz usunąć <strong>${product.getName()}</strong>?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <a role="button" class="btn btn-success" href="/admin/products/remove?currentId=${category.getId()}">Usuń</a>
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Nie usuwaj</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
                         </td>
                     </tr>
                 </c:forEach>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="remove" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Potwierdź operację</h4>
+            </div>
+            <div class="modal-body">
+                <p>Czy jesteś pewien, że chcesz usunąć <strong><span id="nameModal">{product}</span></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" id="linkModal" class="btn btn-success" href="/admin/products/remove?currentId=">Usuń</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Nie usuwaj</button>
+            </div>
+        </div>
+
     </div>
 </div>
 

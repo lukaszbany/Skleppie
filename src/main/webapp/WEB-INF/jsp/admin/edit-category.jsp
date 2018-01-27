@@ -1,4 +1,3 @@
-<%@ page import="skleppie.model.User" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -7,7 +6,7 @@
 <jsp:include page="../header.jsp" />
 
 <div class="container">
-    <h1>Rejestracja</h1>
+    <h1>Edycja kategorii</h1>
 
     <div class="row">
         <div class="col-xs-6">

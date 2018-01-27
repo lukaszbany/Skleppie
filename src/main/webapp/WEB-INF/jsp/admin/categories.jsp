@@ -33,29 +33,7 @@
                             <a role="button" href="/admin/categories/add?parentId=${category.getId()}" class="btn btn-info"><i class="fas fa-plus"></i></a>
                             <c:if test="${category.getId() != '1'}">
                                 <a role="button" href="/admin/categories/${category.getId()}" class="btn btn-info"><i class="fas fa-pencil-alt"></i></a>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove${category.getId()}"><i class="fas fa-trash"></i></button>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="remove${category.getId()}" role="dialog">
-                                    <div class="modal-dialog">
-
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Potwierdź operację</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Czy jesteś pewien, że chcesz usunąć <strong>${category.getName()}</strong> (i podkategorie)?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a role="button" class="btn btn-success" href="/admin/categories/remove?currentId=${category.getId()}">Usuń</a>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Nie usuwaj</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove" onclick="modalID = ${category.getId()}; modalName = '${category.getName()}'; prepareModal()"><i class="fas fa-trash"></i></button>
 
                             </c:if>
                         </td>
@@ -63,6 +41,28 @@
                 </c:forEach>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="remove" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Potwierdź operację</h4>
+            </div>
+            <div class="modal-body">
+                <p>Czy jesteś pewien, że chcesz usunąć <strong><span id="nameModal">{category}</span></strong> (i podkategorie)?</p>
+            </div>
+            <div class="modal-footer">
+                <a role="button" id="linkModal" class="btn btn-success" href="/admin/categories/remove?currentId=">Usuń</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Nie usuwaj</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
