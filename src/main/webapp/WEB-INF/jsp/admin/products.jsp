@@ -14,7 +14,7 @@
             <button type="button" class="btn btn-danger" disabled><i class="fas fa-pencil-alt"></i></button> - usuwanie produktu
             </br>
             </br>
-            <form:form action="/admin/products" method="get" cssClass="form-inline product-filter">
+            <form:form action="/admin/products" method="get" cssClass="form-inline">
             Operacje:
             <a role="button" href="/admin/products/add" class="btn btn-info"><i class="fas fa-plus"></i> Dodaj produkt</a>
             Filtr kategorii:
@@ -67,7 +67,7 @@
                         <td><img src="/public/images/products/${product.getImageFilename()}" class="img-thumbnail admin-panel-products"> </td>
                         <td class="col-md-2">
                             <a role="button" href="/admin/products/${product.getId()}" class="btn btn-info"><i class="fas fa-pencil-alt"></i></a>&nbsp;
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove" onclick="modalID = ${product.getId()}; modalName = '${product.getName()}'; prepareModal()"><i class="fas fa-trash"></i></button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove" onclick="prepareProductRemoveModal(${product.getId()}, '${product.getName()}')"><i class="fas fa-trash"></i></button>
 
                         </td>
                     </tr>

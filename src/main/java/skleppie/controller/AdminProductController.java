@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import skleppie.model.Category;
 import skleppie.model.Product;
 import skleppie.service.CategoryService;
+import skleppie.service.ProductPictureService;
 import skleppie.service.ProductService;
 
 import javax.validation.Valid;
@@ -29,6 +30,9 @@ public class AdminProductController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    ProductPictureService productPictureService;
 
     @RequestMapping("/products")
     public ModelAndView productsPanel(@RequestParam(name = "category", required = false) String categoryId) {
@@ -70,7 +74,7 @@ public class AdminProductController {
         if(bindingResult.hasErrors()) {
             modelAndView = new ModelAndView("admin/edit-product");
             List<Category> categories = categoryService.getCategories();
-            List<String> images = getFilenamesOfImages();
+            List<String> images = productPictureService.getFilenamesOfImages();
             modelAndView.addObject("action", "add");
             modelAndView.addObject("categories", categories);
             modelAndView.addObject("product", product);
@@ -85,25 +89,13 @@ public class AdminProductController {
         return modelAndView;
     }
 
-    private List<String> getFilenamesOfImages() {
-        List<String> images = new ArrayList<>();
-
-            File imageDirectory = new File("src/main/resources/static/public/images/products");
-            if(imageDirectory.exists()) {
-                for(File currentFile : imageDirectory.listFiles()) {
-                    images.add(currentFile.getName());
-                }
-            }
-
-        return images;
-    }
 
     @RequestMapping(value = "/products/add", method = RequestMethod.GET)
     public ModelAndView addProduct() {
         ModelAndView modelAndView = new ModelAndView("admin/edit-product");
 
         List<Category> categories = categoryService.getCategories();
-        List<String> images = getFilenamesOfImages();
+        List<String> images = productPictureService.getFilenamesOfImages();
         Product product = new Product();
 
         modelAndView.addObject("action", "add");
@@ -122,7 +114,7 @@ public class AdminProductController {
         if(bindingResult.hasErrors()) {
             modelAndView = new ModelAndView("admin/edit-product");
             List<Category> categories = categoryService.getCategories();
-            List<String> images = getFilenamesOfImages();
+            List<String> images = productPictureService.getFilenamesOfImages();
             Category currentCategory = product.getCategory();
             int id = Integer.parseInt(idString);
             modelAndView.addObject("action", id);
@@ -146,7 +138,7 @@ public class AdminProductController {
         int id = Integer.parseInt(idString);
         Product currentProduct = productService.findProductById(id);
         List<Category> categories = categoryService.getCategories();
-        List<String> images = getFilenamesOfImages();
+        List<String> images = productPictureService.getFilenamesOfImages();
         Category currentCategory = currentProduct.getCategory();
 
         modelAndView.addObject("action", id);

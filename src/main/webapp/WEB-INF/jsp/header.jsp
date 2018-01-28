@@ -69,8 +69,8 @@
                         <ul class="dropdown-menu">
                             <li><a href="/admin/categories">Kategorie</a></li>
                             <li><a href="/admin/products">Produkty</a></li>
+                            <li><a href="/admin/pictures">Zdjęcia produktów</a></li>
                             <li><a href="/admin/orders">Zamówienia</a></li>
-                            <li><a href="/admin/users">Użytkownicy</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/logout">Wyloguj</a></li>
                         </ul>

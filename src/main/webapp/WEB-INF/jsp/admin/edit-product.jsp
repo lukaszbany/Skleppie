@@ -61,10 +61,10 @@
 
                     <c:choose>
                         <c:when test="${product.getImageFilename() == null }">
-                            <img src="/public/images/products/${images.get(0)}" class="img-thumbnail admin-panel-products" id="image-thumnbnail">
+                            <a data-toggle="modal" id="admin-product-image-zoom" href="" onclick="imageZoomRefresh()"><img src="/public/images/products/${images.get(0)}" class="img-thumbnail admin-panel-products" id="image-thumbnail" ></a>
                         </c:when>
                         <c:when test="${product.getImageFilename() != null }">
-                            <img src="/public/images/products/${product.getImageFilename()}" class="img-thumbnail admin-panel-products" id="image-thumnbnail">
+                            <a data-toggle="modal" id="admin-product-image-zoom" href="" onclick="imageZoomRefresh()"><img src="/public/images/products/${product.getImageFilename()}" class="img-thumbnail admin-panel-products" id="image-thumbnail"></a>
                         </c:when>
                     </c:choose>
 
@@ -75,6 +75,27 @@
 
             </form:form>
         </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="admin-product-image-zoom" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <img src="" class="image-zoom" id="modal-image-zoom"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
