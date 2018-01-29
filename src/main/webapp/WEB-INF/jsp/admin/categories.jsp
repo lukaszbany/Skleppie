@@ -33,7 +33,7 @@
                             <a role="button" href="/admin/categories/add?parentId=${category.getId()}" class="btn btn-info"><i class="fas fa-plus"></i></a>
                             <c:if test="${category.getId() != '1'}">
                                 <a role="button" href="/admin/categories/${category.getId()}" class="btn btn-info"><i class="fas fa-pencil-alt"></i></a>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove" onclick="modalID = ${category.getId()}; modalName = '${category.getName()}'; prepareModal()"><i class="fas fa-trash"></i></button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove" onclick="prepareRemoveModal(${category.getId()}, '${category.getName()}')"><i class="fas fa-trash"></i></button>
 
                             </c:if>
                         </td>

@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:include page="../header.jsp" />
@@ -62,13 +63,15 @@
                             </c:choose>
                         </td>
                         <td class="col-md-2">${product.getCategory().getName()}</td>
-                        <td>${product.getPrice()} zł</td>
+                        <td>
+                            <fmt:setLocale value = "pl_PL"/>
+                            <fmt:formatNumber value = "${product.getPrice()}" type = "currency"/>
+                        </td>
                         <td>${product.getQuantity()}</td>
                         <td><img src="/public/images/products/${product.getImageFilename()}" class="img-thumbnail admin-panel-products"> </td>
                         <td class="col-md-2">
                             <a role="button" href="/admin/products/${product.getId()}" class="btn btn-info"><i class="fas fa-pencil-alt"></i></a>&nbsp;
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove" onclick="prepareProductRemoveModal(${product.getId()}, '${product.getName()}')"><i class="fas fa-trash"></i></button>
-
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove" onclick="prepareRemoveModal(${product.getId()}, '${product.getName()}')"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 </c:forEach>

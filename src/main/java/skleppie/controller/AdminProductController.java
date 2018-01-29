@@ -37,19 +37,23 @@ public class AdminProductController {
     @RequestMapping("/products")
     public ModelAndView productsPanel(@RequestParam(name = "category", required = false) String categoryId) {
         ModelAndView modelAndView = new ModelAndView("admin/products");
-        Category currentCategory = getCurrentCategory(categoryId);
-        List<Product> products = getFilteredCategories(currentCategory);
-        List<Category> categories = categoryService.getCategories();
 
-        modelAndView.addObject("products", products);
-        modelAndView.addObject("categories", categories);
-        modelAndView.addObject("currentCategory", currentCategory);
+        addProductsFilteredByCategory(modelAndView, categoryId);
+        addCategories(modelAndView);
 
         return modelAndView;
     }
 
+    private void addProductsFilteredByCategory(ModelAndView modelAndView, String categoryId) {
+        Category currentCategory = getCurrentCategory(categoryId);
+        modelAndView.addObject("currentCategory", currentCategory);
+
+        List<Product> products = getFilteredCategories(currentCategory);
+        modelAndView.addObject("products", products);
+    }
+
     private Category getCurrentCategory(String categoryId) {
-        if(categoryId == null) {
+        if (categoryId == null) {
             return null;
         }
 
@@ -59,7 +63,7 @@ public class AdminProductController {
 
 
     private List<Product> getFilteredCategories(Category category) {
-        if(category == null) {
+        if (category == null) {
             return productService.getProducts();
         }
 
@@ -69,64 +73,81 @@ public class AdminProductController {
 
     @RequestMapping(value = "/products/add", method = RequestMethod.POST)
     public ModelAndView addProduct(@Valid Product product, BindingResult bindingResult) {
-        ModelAndView modelAndView;
+        ModelAndView modelAndView = new ModelAndView();
 
-        if(bindingResult.hasErrors()) {
-            modelAndView = new ModelAndView("admin/edit-product");
-            List<Category> categories = categoryService.getCategories();
-            List<String> images = productPictureService.getFilenamesOfImages();
+        if (bindingResult.hasErrors()) {
+            prepareEditPageForErrors(modelAndView, product);
             modelAndView.addObject("action", "add");
-            modelAndView.addObject("categories", categories);
-            modelAndView.addObject("product", product);
-            modelAndView.addObject("images", images);
-        }else {
+
+        } else {
             productService.saveProduct(product);
-            modelAndView = new ModelAndView("/admin/edit-message");
-            modelAndView.addObject("successMessage", "Produkt został zapisany");
-            modelAndView.addObject("backLink", "/admin/products");
+            prepareSuccessPage(modelAndView);
         }
 
         return modelAndView;
     }
 
 
+    private void prepareEditPage(ModelAndView modelAndView) {
+        modelAndView.setViewName("admin/edit-product");
+
+        addCategories(modelAndView);
+        addProductImages(modelAndView);
+    }
+
+    private void addCategories(ModelAndView modelAndView) {
+        List<Category> categories = categoryService.getCategories(1);
+        modelAndView.addObject("categories", categories);
+    }
+
+    private void addProductImages(ModelAndView modelAndView) {
+        List<String> images = productPictureService.getFilenamesOfImages();
+        modelAndView.addObject("images", images);
+    }
+
+    private void prepareEditPageForErrors(ModelAndView modelAndView, Product product) {
+        prepareEditPage(modelAndView);
+        addCategoryOfCurrentProduct(modelAndView, product);
+        modelAndView.addObject("product", product);
+    }
+
+    private void addCategoryOfCurrentProduct(ModelAndView modelAndView, Product product) {
+        Category currentCategory = product.getCategory();
+        modelAndView.addObject("currentCategory", currentCategory);
+    }
+
+    private void prepareSuccessPage(ModelAndView modelAndView) {
+        modelAndView.setViewName("/admin/edit-message");
+        modelAndView.addObject("successMessage", "Produkt został pomyślnie zmieniony");
+        modelAndView.addObject("backLink", "/admin/products");
+    }
+
     @RequestMapping(value = "/products/add", method = RequestMethod.GET)
     public ModelAndView addProduct() {
-        ModelAndView modelAndView = new ModelAndView("admin/edit-product");
-
-        List<Category> categories = categoryService.getCategories();
-        List<String> images = productPictureService.getFilenamesOfImages();
-        Product product = new Product();
-
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("action", "add");
-        modelAndView.addObject("categories", categories);
-        modelAndView.addObject("images", images);
-        modelAndView.addObject("product", product);
+
+        prepareEditPage(modelAndView);
+        addNewProduct(modelAndView);
 
         return modelAndView;
     }
 
+    private void addNewProduct(ModelAndView modelAndView) {
+        Product product = new Product();
+        modelAndView.addObject("product", product);
+    }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.POST)
     public ModelAndView modifyProduct(@PathVariable(value = "id") String idString, @Valid Product product, BindingResult bindingResult) {
-        ModelAndView modelAndView;
+        ModelAndView modelAndView = new ModelAndView();
 
-        if(bindingResult.hasErrors()) {
-            modelAndView = new ModelAndView("admin/edit-product");
-            List<Category> categories = categoryService.getCategories();
-            List<String> images = productPictureService.getFilenamesOfImages();
-            Category currentCategory = product.getCategory();
-            int id = Integer.parseInt(idString);
-            modelAndView.addObject("action", id);
-            modelAndView.addObject("categories", categories);
-            modelAndView.addObject("images", images);
-            modelAndView.addObject("product", product);
-            modelAndView.addObject("currentCategory", currentCategory);
-        }else {
+        if (bindingResult.hasErrors()) {
+            prepareEditPageForErrors(modelAndView, product);
+            modelAndView.addObject("action", Integer.parseInt(idString));
+        } else {
             productService.saveProduct(product);
-            modelAndView = new ModelAndView("/admin/edit-message");
-            modelAndView.addObject("successMessage", "Produkt został pomyślnie zmieniony");
-            modelAndView.addObject("backLink", "/admin/products");
+            prepareSuccessPage(modelAndView);
         }
 
         return modelAndView;
@@ -134,18 +155,16 @@ public class AdminProductController {
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     public ModelAndView modifyProduct(@PathVariable(value = "id") String idString) {
-        ModelAndView modelAndView = new ModelAndView("admin/edit-product");
-        int id = Integer.parseInt(idString);
-        Product currentProduct = productService.findProductById(id);
-        List<Category> categories = categoryService.getCategories();
-        List<String> images = productPictureService.getFilenamesOfImages();
-        Category currentCategory = currentProduct.getCategory();
+        ModelAndView modelAndView = new ModelAndView();
+        prepareEditPage(modelAndView);
 
+        int id = Integer.parseInt(idString);
         modelAndView.addObject("action", id);
-        modelAndView.addObject("currentCategory", currentCategory);
-        modelAndView.addObject("categories", categories);
-        modelAndView.addObject("images", images);
+
+        Product currentProduct = productService.findProductById(id);
         modelAndView.addObject("product", currentProduct);
+
+        addCategoryOfCurrentProduct(modelAndView, currentProduct);
 
         return modelAndView;
     }

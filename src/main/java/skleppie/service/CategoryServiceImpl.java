@@ -22,14 +22,15 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findById(id);
     }
 
-    public List<Category> getCategories() {
+    public List<Category> getCategories(int topCategoryId) {
         List<Category> categories = new ArrayList<>();
-        Category category = findCategoryById(1);
+        Category category = findCategoryById(topCategoryId);
         categories.add(category);
         categories.addAll(addSubcategories(category));
 
         return categories;
     }
+
 
     @Override
     public Long removeCategory(int id) {

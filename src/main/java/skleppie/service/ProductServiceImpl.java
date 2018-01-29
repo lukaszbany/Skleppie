@@ -17,6 +17,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    CategoryService categoryService;
+
     @Override
     public Product findProductById(int id) {
         return productRepository.findById(id);
@@ -35,7 +38,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProductsByCategory(Category category) {
         List<Product> products = getProducts();
-        return products.stream().filter( product -> product.getCategory() == category ).collect(Collectors.toList());
+        List<Category> subcategories = categoryService.getCategories(category.getId());
+        return products.stream().filter( product -> subcategories.contains(product.getCategory()) ).collect(Collectors.toList());
     }
 
     @Override

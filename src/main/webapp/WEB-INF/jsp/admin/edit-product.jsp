@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Kategoria:</label>
+                    <label class="control-label">Zdjęcie produktu:</label>
                     <form:select path="imageFilename" cssClass="form-control" id="imageFilename" onchange="imageRefresh()">
                         <c:forEach items="${images}" var="image" >
                             <c:choose>

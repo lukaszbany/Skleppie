@@ -1,4 +1,4 @@
-var productRemoveLink;
+var removeLink;
 var indexOfFilename;
 var productImagesPath;
 var imageFilename;
@@ -11,9 +11,9 @@ $(document).ready(function() {
 
     if (currentViewName === '/admin/pictures') {
         pictureRemoveLink = $("a#pictureRemoveLinkModal").attr("href");
-    }else if (currentViewName === '/admin/products') {
-        productRemoveLink = $("a#linkModal").attr("href");
-    }else if  (currentViewName.substr(0, lastIndexOfSeparator + 1) == '/admin/products/') {
+    }else if (currentViewName === '/admin/products' || currentViewName === '/admin/categories') {
+        removeLink = $("a#linkModal").attr("href");
+    }else if  (currentViewName.substr(0, lastIndexOfSeparator + 1) === '/admin/products/') {
         indexOfFilename = $("img#image-thumbnail").attr("src").lastIndexOf("/");
         productImagesPath = $("img#image-thumbnail").attr("src").substr(0, indexOfFilename + 1)
         imageFilename = $("img#image-thumbnail").attr("src").substr(indexOfFilename + 1);
@@ -22,9 +22,9 @@ $(document).ready(function() {
 });
 
 
-function prepareProductRemoveModal(productID, productName) {
-    $("span#nameModal").html(productName);
-    $("a#linkModal").attr("href", productRemoveLink + productID);
+function prepareRemoveModal(id, name) {
+    $("span#nameModal").html(name);
+    $("a#linkModal").attr("href", removeLink + id);
 };
 
 function preparePictureRemoveModal(modalFilename) {
