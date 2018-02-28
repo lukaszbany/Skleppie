@@ -26,7 +26,7 @@ public class Product {
     @Length(max = 3000, message = "Zbyt długi opis produktu")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
